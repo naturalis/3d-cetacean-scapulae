@@ -1,0 +1,39 @@
+﻿<tool id="Landmarks2Wireframe" name="Landmarks2Wireframe">
+	<description>Plot landmarks on a wireframe</description>
+	<command interpreter="Rscript">Landmarks2Wireframe.R $file $sample_lvl $x_dim $y_dim "$main_title" "$x_lab" "$y_lab" "$legend_title" $flip_x $flip_y "$sep" $wire_plot_out $R_proc_rds</command>
+	<inputs>
+		<param name="file" type="data" label="Complete .dta file from Landmarker IDAV"/>
+		<param name="sample_lvl" type="integer" value="1" label="Extract level. 1 for groups, 2 for specimens"/>
+		<param name="x_dim" type="select" value="" label = "Dimension for X-Axis (X-Y or Z)">
+			<option value="X">X</option>
+			<option value="Y">Y</option>
+			<option value="Z">Z</option>
+		</param>
+		<param name="y_dim" type="select" value="" label = "Dimension for Y-Axis (X-Y or Z)">
+			<option value="X">X</option>
+			<option value="Y" selected="true">Y</option>
+			<option value="Z">Z</option>
+		</param>
+		<param name="main_title" type="text" value="Wireframe of mean landmark groups PCA-Coords" label="Title for wireframe plot"/>
+		<param name="x_lab" type="text" value="Landmarks X-Axis" label="Title X-Axis"/>
+		<param name="y_lab" type="text" value="Landmarks Y-Axis" label="Title Y-Axis"/>
+		<param name="legend_title" type="text" value="Species" label="Title for legend"/>
+		<param name="flip_x" type="select" value="" label="Flip plot on X-Axis">
+			<option value="FALSE">No</option>
+			<option value="TRUE">Yes</option>
+		</param>
+		<param name="flip_y" type="select" value="" label="Flip plot on y-Axis">
+			<option value="FALSE">No</option>
+			<option value="TRUE">Yes</option>
+		</param>
+		<param name="sep" type="text" value="_" label="Seperator specimen and group (Default '_')"/>
+	</inputs>
+	<outputs>
+		<data format="png" name="wire_plot_out" label="Wireframe plot"/>
+		<data format="rdata" name="R_proc_rds" label="R data file" />
+	</outputs>
+	<help>
+	Help will be added later on. This script might be a bit bigger.
+	</help>
+</tool>
+		

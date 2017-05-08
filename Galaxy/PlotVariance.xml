@@ -1,0 +1,15 @@
+﻿<tool id="PlotVariance" name="PlotVariance">
+	<description>Plot variance</description>
+	<command interpreter="Rscript">PlotVariance.R $r_data "$Plot_title" $plot_out</command>
+	<inputs>
+		<param name="r_data" type="data" label="RData file."/>
+		<param name="Plot_title" type="text" value="Variance plot" label="Title for variance plot"/>
+	</inputs>
+	<outputs>
+		<data format="png" name="plot_out" label="Variance_plot"/>
+	</outputs>
+	<help>
+	Available soon!
+	</help>
+</tool>
+	
