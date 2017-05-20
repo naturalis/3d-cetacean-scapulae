@@ -71,23 +71,24 @@ This script reads data, performs a Procrustes and Principal Component Analysis a
 |x_lab	|Title for X axis. E.G: Landmarks X axis.|
 |y_lab	|Title for Y axis. E.G: Landmarks Y axis.|
 |legend_title|	Title for legend. E.G: Species.|
-|flip_x|	Option to flip output plot horizontal. |
-|flip_y	|Option to flip output plot vertical.|
-|sep	|Separator for Species_SampleID. Default is “_”. |
+|flip\_x|	Option to flip output plot horizontal. |
+|flip\_y|Option to flip output plot vertical.|
+|sep	|Separator for Species\_SampleID. Default is "\_"  |
 |ggplot_loc|	Location to save output plot. Used by Galaxy.|
-|r_data|	Location to save RData file. This is used by other scripts, and can be imported into a RStudio worksession. Also is required for Galaxy.|
+|r\_data|	Location to save RData file. This is used by other scripts, and can be imported into a RStudio worksession. Also is required for Galaxy.|
 
 ### PlotPCA_GG
 PlotPCA_GG can plot principal components that are yielded from Landmarks2Wireframe. The program has the following parameters.
+  
 |Parameter name	|Explanation|
 |---------------|-----------|
-|r_data|	Input RData file. Generated from Landmarks2Wireframe.|
+|r\_data|	Input RData file. Generated from Landmarks2Wireframe.|
 |group_lvl|	Useful when the Species_SampleID format is used. This will set icons and colors to species level. Best to set this to 1.|
 |speci_lvl|	This is used to set label names. Can be set to set labels to data points. Use 1 for species as label names, and 2 for specimenIDs|
 |PCX| 	X dimension to show. Useful to set as 1, 2 or 3.|
 |PCY|	Y dimension to show. Useful to set as 1, 2 or 3.|
-|main_title|	Title for output plot. E.G: PCA for 60 landmarks.|
-|ggplot_loc	|Location to save output plot. Used by Galaxy.|
+|main_title|Title for output plot. E.G: PCA for 60 landmarks.|
+|ggplot_loc|Location to save output plot. Used by Galaxy.|
 
 ### PlotVariance
 The outputted R file from Landmarks2wireframe can be imported to calculate the percentage from the standard deviation of each principal component and plot the result. The script uses the following parameters.
