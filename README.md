@@ -99,6 +99,13 @@ The outputted R file from Landmarks2wireframe can be imported to calculate the p
 |main_title|	Title for output plot. E.G: Variance plot.|
 |ggplot_loc	|Location to save output plot. Used by Galaxy.|
 
+## Image Processing
+Image processing is performed by ConvertBackground.bash. Another example can be found in the script Examples_IM.bash. These scripts can be executed in the terminal when ImageMagick is installed. 
+```
+sudo apt-get install imagemagick
+```
 
+## Supplementary
+The dta file that is used in the wireframe can be found here. The format for Species_SampleID used in this file.
 
 
