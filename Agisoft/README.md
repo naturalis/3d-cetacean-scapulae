@@ -1,11 +1,11 @@
 ## Agisoft
-Scripts that were created for Agisoft Photoscan Professional can be found here. The application programming interface manual can be found online (http://www.agisoft.com/).
+Scripts that were created for Agisoft Photoscan Professional can be found here. The application programming interface manual can be found online: (http://www.agisoft.com/).
 Version 1.2.5 of the python reference is used with python 3 and Agisoft PhotoScan Professional 1.2.
 
-Scripts can be executed by <b>Tools > Run Script. </b>
+Scripts can be executed in the Agisoft menu: <b>Tools > Run Script. </b>
 
 ### AddBulkData
-This script imports all the data into a Agisoft project and loads manual set masks. This works when the following folder structure is used:  
+This script imports all the data into the Agisoft project and loads manual set masks. This works when the following folder structure is used:  
  ``` 
 SampleID  
 -SampleID  
@@ -20,12 +20,12 @@ SampleID
 The Agisoft project has to be saved first before using the script.
 
 ### BulkChangePath
-This script is useful when a Agisoft project is used on different computers with different folder paths and when Agisoft complains that no photos could be found. This error could be caused when a project is transferred to another person. Agisoft keeps track of used paths per image. For example:
+This script is useful when an Agisoft project is used on different computers with different folder paths and when Agisoft complains that no images can be found. This error could be caused when a project is transferred to another person. Agisoft keeps track of used paths per image. For example:
 
 ```
 C:\Users\Sjors\Documents\Image_1.tif
 ```
-Is changed to
+Is changed to:
 ```
 C:\Users\Sebastiaan\Documents\Image_1.tif
 ```
