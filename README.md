@@ -1,4 +1,4 @@
-# 3dcetaceanscalpulae
+# 3D-Cetacean-scalpulae
 
 ## Agisoft
 Scripts that were created for Agisoft Photoscan Professional can be found here. The application programming interface manual can be found online (http://www.agisoft.com/).
