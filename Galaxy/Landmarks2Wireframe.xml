@@ -2,8 +2,8 @@
 	<description>Plot landmarks on a wireframe</description>
 	<command interpreter="Rscript">Landmarks2Wireframe.R $file $sample_lvl $x_dim $y_dim "$main_title" "$x_lab" "$y_lab" "$legend_title" $flip_x $flip_y "$sep" $wire_plot_out $R_proc_rds</command>
 	<inputs>
-		<param name="file" type="data" label="Complete .dta file from Landmarker IDAV"/>
-		<param name="sample_lvl" type="integer" value="1" label="Extract level. 1 for groups, 2 for specimens"/>
+		<param name="file" type="data" label="Complete .dta file from IDAV Landmark"/>
+		<param name="sample_lvl" type="integer" value="1" label="Extract level. 1 for species / groups, 2 for specimens"/>
 		<param name="x_dim" type="select" value="" label = "Dimension for X-Axis (X-Y or Z)">
 			<option value="X">X</option>
 			<option value="Y">Y</option>
@@ -33,7 +33,11 @@
 		<data format="rdata" name="R_proc_rds" label="R data file" />
 	</outputs>
 	<help>
-	Help will be added later on. This script might be a bit bigger.
+	This module creates a wireframe from an exported 'dta' file from IDAV Landmark.
+	
+	Dimensions for the X and Y axis can be choosen as well as the level of detail. Use 1 in sample_lvl for a wireframe on species level and 2 for all the specimens in the dta file.
+		
+	Please seperate species and specimens by using a seperator. E.G. Species_SampleID.
 	</help>
 </tool>
 		

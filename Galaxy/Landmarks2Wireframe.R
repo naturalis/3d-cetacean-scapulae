@@ -41,7 +41,7 @@ calc_mean_group <- function(pcaloadings, nLandmarks){
   return (as.data.frame(meanmatrix))
 }
 
-detect_groups <- function(samplenames, level, sep="_"){
+detect_groups <- function(samplenames, level, sep = "_"){
   # Input: 3
   # Samplenames: From fileread file$dimnames
   # Leven of extraction in '_'. Can only be applied when _ is used.
@@ -58,24 +58,32 @@ detect_groups <- function(samplenames, level, sep="_"){
   # The result is returned as a list.
   level <- as.integer(level) # Galaxy input is in string format...
   groups_raw <- NULL
+  group_name_raw <- NULL
   for (name in samplenames){
     groups_raw <- c(groups_raw, unlist(strsplit(name, sep))[level])
+    group_name_raw <- c(group_name_raw, unlist(strsplit(name, sep))[1])
   }
   groups_uniq <- unique(groups_raw)
   freqs <- count(groups_raw )
   freqs <- freqs[match(groups_uniq, freqs$x),]
   # Loop through the length of the frequences.
   for (item in 1:length(freqs[,1])){
+    if (level == 1){
+      group_name <- as.character(freqs$x[item])
+    }
+    else if (level == 2){
+      group_name <- group_name_raw[item]
+    }
     name <- as.character(freqs$x[item])
     if (item == 1){
       startpos <- 1
       endpos <- freqs$freq[item]
-      groups <- list(c(startpos, endpos, name))
+      groups <- list(c(startpos, endpos, name, group_name))
     }
     else{
       startpos <- endpos + 1
       endpos <- endpos + freqs$freq[item]
-      groups[[item]] <- c(startpos, endpos, name)
+      groups[[item]] <- c(startpos, endpos, name, group_name)
     }
   }
   return(groups)
@@ -113,12 +121,13 @@ getLandmarks2Wireframe <- function(landmarksfile, sample_lvl, nLandmarks, x_dim,
     df_3Dmean_group <- calc_mean_group(pcaloadings = pcaloadings[,,group[1]:group[2]], nLandmarks)
     # Add group name to group
     df_3Dmean_group$Name <- group[3]
+    df_3Dmean_group$Group_name <- group[4]
     # Bind df_3Dmean_group to total dataframe on row.
     dftotalgroups <- rbind(dftotalgroups, df_3Dmean_group)
   }
   # Get dimension data and names.(This is always 4: X, Y, Z, Name)
-  filterdgroups <- dftotalgroups[,c(x_dim, y_dim, 4)]
-  save(procPCA, file=r_data)
+  filterdgroups <- dftotalgroups[,c(x_dim, y_dim, 4, 5)]
+  save(procPCA, file=r_data) # Save variable for plotting in other modules
   return (list(dfmean, filterdgroups))
 }
 
@@ -160,33 +169,35 @@ landmarks2wireframe <- function(landmarksfile, sample_lvl, nLandmarks, x_dim, y_
   #
   # Large function that collects and plots the data for a wireframe.
 
-  x_dim_val <- eval_dim(x_dim)
-  x_dim_new <- as.integer(x_dim_val[1])
-  x_dat <- x_dim_val[2]
-  
-  y_dim_val <- eval_dim(y_dim)
-  y_dim_new <- as.integer(y_dim_val[1])
-  y_dat <- y_dim_val[2]
-
+  # Get indexes for X axis. EG: Column V1 for dataframe filtered groups
+  x_dim_val <- eval_dim(x_dim) # Vector
+  x_dim_new <- as.integer(x_dim_val[1]) # Integer
+  x_dat <- x_dim_val[2] # String
+  # Get indexes for Y axis.
+  y_dim_val <- eval_dim(y_dim) # Vector
+  y_dim_new <- as.integer(y_dim_val[1]) # Integer
+  y_dat <- y_dim_val[2] # string
+  # Get data for plot
   landmarksoutput <- getLandmarks2Wireframe(landmarksfile=landmarksfile, sample_lvl=sample_lvl,
                                            nLandmarks=nLandmarks, x_dim=x_dim_new, y_dim=y_dim_new, sep, r_data)
   dfmean <- landmarksoutput[[1]]
   filterdgroups <- landmarksoutput[[2]]
-
-  # Create GG plot
+    # Create GG plot
   wireframeplot <- ggplot(dfmean, aes(x = V1, y = V2, colour="Meanshape")) + 
-    geom_path() +
-    geom_point() +
-    geom_text(aes(label = 1:nLandmarks, colour="Meanshape"), 
-              show.legend=F, size=5, position = position_nudge(y = -0.02)) + 
-    geom_point(data = filterdgroups, aes_string(x = x_dat, y=y_dat, colour ="Name"))  + 
-    geom_path(data = filterdgroups, aes_string(x = x_dat, y=y_dat, colour ="Name")) + 
+    geom_point(data = filterdgroups, aes_string(x = x_dat, y=y_dat, colour ="Group_name"), size=3)  + 
+    geom_path(data = filterdgroups, aes_string(x = x_dat, y=y_dat, group="Name", colour ="Group_name"), size=1.5) +
+    geom_point(data = dfmean, aes(x = V1, y = V2, colour="Meanshape") , size=3)+
+    geom_path(data = dfmean, aes(x = V1, y = V2, colour="Meanshape"), size=1.5 )+
+    geom_text(aes(label = 0:(nLandmarks-1)),  colour="Black", show.legend=F, size=4, fontface = "bold") +
     scale_colour_discrete(name=legend_title) +
     ggtitle(main_title) + 
     labs(x=x_lab, y=y_lab) +
     theme(plot.title = element_text(family = "Trebuchet MS", color="#666666", face="bold", size=18, hjust=0.5)) +
-    theme(axis.title = element_text(family = "Trebuchet MS", color="#666666", face="bold", size=12))
-  # Sort of booleans. It works.
+    theme(axis.title = element_text(family = "Trebuchet MS", color="#666666", face="bold", size=16)) +
+    theme(legend.text = element_text(size = 12) ) +
+    theme(legend.title = element_text(size=14, face="bold"))
+  
+  # This if statement flips the plot if one of the variables is set to TRUE in string format.
   if(flip_x == "TRUE"){
     wireframeplot <- wireframeplot + coord_flip()
   }else if(flip_y == "TRUE"){
@@ -198,7 +209,7 @@ landmarks2wireframe <- function(landmarksfile, sample_lvl, nLandmarks, x_dim, y_
 }
 
 main <- function(args){
-  test_data <- F
+  test_data <- F # Set to T for standalone.
   if (!test_data){
     # Read input file
     file <- read.lmdta(args[1])
@@ -230,19 +241,22 @@ main <- function(args){
     r_data <- args[13]
   }
   if (test_data){
-    setwd("D:/Dropbox/hbo/Naturalis/Pipeline/PCA_Smallsteps/")
-    file <- read.lmdta("Focus_3-3/Focus_3-2-3.dta")
-    sample_lvl <- 1
+    setwd("D:/Dropbox/hbo/Naturalis/Pipeline/Key_data/") # Set directory where dta file is located
+    file <- read.lmdta("C-Dolphin_Harbour-P_whitebkd-D_60landmarks_curves-only.dta") # input dta file
+    sample_lvl <- 1 # sort by species (1) or by specimens (2). 
     nLandmarks <- as.integer(file$info[3])/3
     x_dim <- "X"
     y_dim <- "Y"
-    main_title <- "Wireframe of mean landmark groups PCA-Coords"
+    main_title <- "Wireframe per group 60 landmarks"
     x_lab <- "Landmarks X-Axis"
     y_lab <- "Landmarks Y-Axis"
     legend_title <- "Species"
-    flip_y <-"TRUE"
+    # FLip plot on x or y axis. Set to str TRUE
+    flip_y <-"FALSE"
     flip_x <- "FALSE"
     sep <- "_"
+    ggplot_loc <- paste(getwd(), "/wireframe_v3.png", sep="")
+    r_data = "ProcustesPCA.Rdata"
   }
   landmarks2wireframe(file, sample_lvl, nLandmarks, x_dim, y_dim, main_title, x_lab, y_lab, legend_title,
                       flip_x, flip_y, sep, ggplot_loc, r_data)
