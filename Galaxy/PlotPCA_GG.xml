@@ -3,8 +3,8 @@
 	<command interpreter="Rscript">PlotPCA_GG.R $r_data "$group_lvl" "$speci_lvl" "$PCX" "$PCY" "$Plot_title" $plot_out</command>
 	<inputs>
 		<param name="r_data" type="data" label="RData file."/>
-		<param name="group_lvl" type="integer" value="1" label="Extract level for groups. 1 for groups, 2 for specimens"/>
-		<param name="speci_lvl" type="integer" value="2" label="Extract level for Specimen. 1 for groups, 2 for specimens"/>
+		<param name="group_lvl" type="integer" value="1" label="Extract level for labels of groups. 1 for groups, 2 for specimens"/>
+		<param name="speci_lvl" type="integer" value="2" label="Extract level for labels of Specimen. 1 for groups, 2 for specimens"/>
 		<param name="PCX" type="integer" value="1" label="Principal for X-Axis"/>
 		<param name="PCY" type="integer" value="2" label="Principal for Y-Axis"/>
 		<param name="Plot_title" type="text" value="Principal components" label="Title for PCA plot"/>
@@ -13,6 +13,7 @@
 		<data format="png" name="plot_out" label="PCA_plot"/>
 	</outputs>
 	<help>
-	Comming soon!
+This module plots the Principal Components Analysis from Landmarks2Wireframe. You can select the level of icons for groups / species and the level for samples / museumIDs.
+Use 1 for species level and 2 for specimen numbers.
 	</help>
 </tool>

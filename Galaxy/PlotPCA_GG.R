@@ -1,5 +1,6 @@
 # 03-05-2017: Sebastiaan de Vriend
-# Plotting PCA on Species level.
+# This script loads in a Rdata file that is outputted by Landmarks2Wireframe and
+# plots the Principal Component Analysis that is performed by Landmarks2Wireframe.
 library(plyr)
 library(ggplot2)
 
@@ -22,6 +23,9 @@ detect_groups <- function(samplenames, level, sep="_"){
   level <- as.integer(level) # Galaxy input is in string format...
   groups_raw <- NULL
   for (name in samplenames){
+    # split each samplename and add level to list.
+    # 1 for species
+    # 2 for museumID
     groups_raw <- c(groups_raw, unlist(strsplit(name, sep))[level])
   }
   groups_uniq <- unique(groups_raw)
@@ -43,11 +47,13 @@ detect_groups <- function(samplenames, level, sep="_"){
   }
   group_vector <- c()
   for (member in groups){
+    # create group vector and repeat group member for the number of times it is in the dataset
+    # EG: dolphin, 3 will be insersted as dolphin, dolphin, dolphin
+    # Can be done with less lines of code, but it works...
     group_vector <-c(group_vector, rep(member[3], (as.integer(member[2]) - as.integer(member[1]) + 1)))
   }
   return(group_vector)
 }
-
 
 
 plot_pca <- function(r_data, Group_lvl, Speci_lvl, PCX, PCY, plot_title, plot_loc){
@@ -75,14 +81,14 @@ plot_pca <- function(r_data, Group_lvl, Speci_lvl, PCX, PCY, plot_title, plot_lo
   dfPCA$Species <- detect_groups(row.names(dfPCA), Group_lvl)
   # Add samplename to dataframe
   dfPCA$Sample_names <- detect_groups(row.names(dfPCA), Speci_lvl)
-  
+  # Variable names to use in ggplot2
   PCX <- paste("PC", PCX, sep="")
   PCY <- paste("PC", PCY, sep="")
-  Species <- "Species"
+  Species <- "Species" 
   Sample_names <- "Sample_names"
   # plot data
-  pca_plot <- ggplot(data=dfPCA, aes_string(x=PCX, y=PCY, shape=Species, colour=Species, label=Sample_names)) + geom_point() +
-    geom_text(size=3, position = position_nudge(y = -0.001), show.legend = F) + 
+  pca_plot <- ggplot(data=dfPCA, aes_string(x=PCX, y=PCY, shape=Species, colour=Species, label=Sample_names)) + geom_point(size=3) +
+    geom_text(size=3, position = position_nudge(y = -0.004), show.legend = F) + 
     ggtitle(plot_title) + 
     theme(plot.title = element_text(family = "Trebuchet MS", color="#666666", face="bold", size=18, hjust=0.5)) +
     theme(axis.title = element_text(family = "Trebuchet MS", color="#666666", face="bold", size=12))
@@ -91,7 +97,6 @@ plot_pca <- function(r_data, Group_lvl, Speci_lvl, PCX, PCY, plot_title, plot_lo
   invisible(capture.output(print(pca_plot)))
   invisible(capture.output(dev.off()))
 }
-
 
 
 main <- function(args){
@@ -106,17 +111,15 @@ main <- function(args){
     plot_loc <- args[7]
   }
   else if(test_data){
-    r_data <- ""
+    r_data <- "~/Rdata"
     group_lvl <- 1
     speci_lvl <- 2
-    PCX <- 1
+    PCX <- 1 
     PCY <- 2
-    main_title <- "Titel voor barplot"
-    plot_loc <- "Locatie voor plot"
+    main_title <- "PCA plot"
+    plot_loc <- "~/plots"
   }
   plot_pca(r_data, group_lvl, speci_lvl, PCX, PCY, main_title, plot_loc)
 }
 
 main(commandArgs(T))
-
-

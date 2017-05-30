@@ -9,7 +9,7 @@
 		<data format="png" name="plot_out" label="Variance_plot"/>
 	</outputs>
 	<help>
-	Available soon!
+	This module plots the variance of each Principal Component that is created by Landmarks2Wireframe.
 	</help>
 </tool>
 	
