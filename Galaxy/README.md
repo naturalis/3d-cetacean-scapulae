@@ -1,7 +1,7 @@
 # Galaxy
 This folder contains the scripts and xml files that are used in Galaxy. A temporary Galaxy is set online and can be tested with a supplementary file (http://145.136.241.84:8080/). 
 
-Please place tools in the tools folder in galaxy and edit the tool_conf.xml in the config folder.
+Please place scripts and xml files in the tools folder in galaxy and edit the tool_conf.xml in the config folder.
 
 ## Install_R-packages
 This script can be used to install packages that are required by the Galaxy pipeline. It is advised to run this script in the shell environment. The script installs:
